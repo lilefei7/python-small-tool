@@ -1,0 +1,61 @@
+import datetime,time,sys,requests,easygui,os,re
+from bs4 import BeautifulSoup
+flag = 0
+sleep_t = 3600
+def update():
+    with open(r'C:\Users\17140\Desktop\tiyan.log', 'r') as r:
+        lines = r.readlines()
+    with open(r'C:\Users\17140\Desktop\tiyan.log', 'w') as w:
+        length = len(lines)
+        for line in lines:
+            length -= 1
+            if length < 15:
+                w.write(line)
+def way_2():
+    url_2 = 'http://pvp.qq.com/cp/a20161115tyf/index.shtml'  # 专区说明
+    s = requests.get(url_2, timeout=60)
+    # s.raise_for_status()
+    s.encoding = s.apparent_encoding
+    # print(s.text)
+    m = re.search(r'体验服【资格申请活动】即将开启.*([^<>\/].+?)</em>', s.text, flags=0)
+    # print(m.group())
+    if m!=None:
+         if '08/06' not in m.group():
+             easygui.msgbox('公告上显示开启申请', title="王者荣耀体验服", ok_button="知道了")
+def way_1():
+    try:
+        url = 'http://pvp.qq.com/cp/a20161115tyf/page1.shtml' #申请资格
+        r = requests.get(url, timeout=60)
+        r.raise_for_status()
+        r.encoding = r.apparent_encoding
+        #print(r.text)
+        str = "2018年8月06日"
+        # stdout_backup = sys.stdout
+        if str not in r.text:
+            n = re.search(r'开放时间.*</p>', r.text, flags=0)
+            open_time = n.group()[:-4]
+            remind = "体验服【资格申请活动】即将开启,{}".format(open_time)
+            easygui.msgbox(remind, title="王者荣耀体验服", ok_button="知道了")
+            print("体验服【资格申请活动】即将开启")
+            print(open_time)
+        else:
+            way_2()
+            print("未开放")
+    except:
+        url_error = "网站响应出现意外"
+        print("网站响应出现意外")
+        return 'url_error'
+while True:
+# stdout_backup = sys.stdout
+    with open(r'C:\Users\17140\Desktop\tiyan.log', 'a') as fw:
+        if flag == 0:
+            #easygui.msgbox("程序开始在后台运行,每隔{}秒爬一次".format(sleep_t), title="检测体验服", ok_button="知道了")
+            flag = 1
+        stdout_backup = sys.stdout
+        sys.stdout = fw
+        now = datetime.datetime.now()
+        print(now,end="")
+        print("    的结果是:",end="")
+        way_1()
+        update()
+    time.sleep(sleep_t)
