@@ -1,0 +1,72 @@
+import  pyautogui,requests,webbrowser,os
+import random
+import time
+renqi = "人气"
+open_url_flag = 0
+flag = 0
+c = "6"
+# webbrowser.get('firefox').open('www.baidu.com')
+url = 'https://egame.qq.com/254846458'#逸辰直播间s
+def clear_file(file):#清空文件内容
+    with open(file, "w") as f:
+        pass
+def open_url(browser,url):#创建打开浏览器，暂停播放
+    with open("browser_url.bat", "w") as f:
+        f.write("start ")
+        f.write(browser)
+        f.write(' ')
+        f.write(url)
+        f.write('\n')
+    os.system('browser_url.bat')
+    pause()
+        # f.write('ping /n 4 127.1>nul\n')
+def getHTMLText(url):
+
+    try:
+        r=requests.get(url,timeout=5)
+        r.raise_for_status()
+        # r.encoding = r.apparent_encoding
+        # print(r.text)
+        return r.text
+    except:
+        return ' '
+def send():
+    time.sleep(3)
+    pyautogui.typewrite(str)
+    time.sleep(1)
+    pyautogui.press('enter')
+    time.sleep(11)
+def pause():
+    t = 10
+    time.sleep(t)
+    pyautogui.click(730, 370)
+    pyautogui.hotkey("space")
+    time.sleep(1)
+    pyautogui.click(1068, 691)
+    time.sleep(0.3)
+    pyautogui.click(1071, 670)
+    time.sleep(0.3)
+    pyautogui.click(1071, 650)
+    time.sleep(0.3)
+    pyautogui.click(1071, 630)
+# while True:
+#     time.sleep(1)
+#     print(pyautogui.position())
+# clear_file("browser_url.bat")#使用文件之前先清空
+# open_url('QQBrowser',url)#浏览器的名称用字符形式传入函数
+# open_url("UCBrowser",url)
+# open_url("Maxthon",url)
+# os.system('browser_url.bat')
+# pause()
+
+for i in range(120):
+    html = getHTMLText(url)
+    if renqi not in html:
+        break
+    num = 1 + (random.random() * 10) // 1
+    str = c * int(num)
+    for j in range(4):
+        send()
+
+
+#             # pyautogui.hotkey('alt', 'tab')
