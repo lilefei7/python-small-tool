@@ -1,0 +1,54 @@
+# -*- coding: gb2312 -*-
+import sys
+import  pyautogui,requests,webbrowser,os,random,time,re,easygui
+path = "C:\Program Files (x86)\Thunder Network\Thunder\Program\Thunder.exe"
+flag = '0'
+down_flag  = '0'
+url = 'http://www.meijutt.com/content/meiju23733.html'
+def thunder():
+    global flag
+    global down_flag
+    try:
+        r = requests.get(url, timeout=60)
+        r.raise_for_status()
+        r.encoding = r.apparent_encoding
+        rep = 'The.Flash.S05E' + str(x)
+        # print(rep)
+        longchar = "ed2k://......闪电侠.The.Flash.S05E03.中英字幕.HDTVrip.720P-人人影视.mp4.{50,120}/"
+        modify = longchar.replace('The.Flash.S05E03', rep)
+        pipei = re.compile(modify)
+        # print(modify)
+        n = re.search(pipei, r.text, flags=0)
+        # print(n.group())
+        if flag == '0':
+            remind = "运行成功"
+            # easygui.msgbox(remind, title="下载闪电侠", ok_button="知道了")
+            flag = '1'
+        th_u = n.group()
+        down_flag = '1'
+    except:
+        return (" ")
+    return (th_u)
+def start(aurl):
+    with open(r'thunder.bat', "w") as fw:
+        stdout_backup = sys.stdout
+        sys.stdout = fw
+        print("\"", end='')
+        print(path, end='')
+        print("\" ", end='')
+        print("\"", end='')
+        print(aurl, end='')
+        print("\"")
+        # print("exit ")
+    os.system('thunder.bat')
+while True:
+    x = '04'
+    th_url = thunder()
+    # print("又爬了一次")
+    if down_flag == '0':
+        time.sleep(1200)
+    else:
+        start(th_url)
+        break
+
+
